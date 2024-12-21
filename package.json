@@ -1,5 +1,5 @@
 {
-  "name": "hallelujah-schema",
+  "name": "@abybylijedno/hallelujah-schema",
   "version": "1.0.0",
   "description": "",
   "main": "schema.ts",
