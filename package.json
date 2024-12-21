@@ -2,11 +2,11 @@
   "name": "hallelujah-schema",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "schema.ts",
   "scripts": {
     "build": "bebopc build"
   },
-  "author": "",
+  "author": "Marek Sierociński",
   "license": "GPL-3.0",
   "devDependencies": {
     "bebop-tools": "^3.1.3"

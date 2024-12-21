@@ -35,37 +35,48 @@ jobs:
         run: npm run build
 
       - name: Copy build artifact to temp directory
-        run: mv schema.ts "${{ runner.temp }}/schema.ts"
+        run: |
+          mv schema.ts "${{ runner.temp }}/schema.ts"
+          cp package.json "${{ runner.temp }}/package.json"
+
+      - name: Setup envs
+        run: |
+          echo "NEXT_VERSION=${{ steps.semver.outputs.next }}" >> $GITHUB_ENV
+          echo "NEXT_MAJOR_VERSION=${{ steps.semver.outputs.nextMajor }}" >> $GITHUB_ENV
 
       - name: Checkout to major version branch
-        env:
-          BRANCH_NAME: ${{ steps.semver.outputs.nextMajor }}
         run: |
           set -e
           git fetch origin
           
-          if git show-ref --verify --quiet refs/heads/$BRANCH_NAME; then
-            git checkout $BRANCH_NAME
+          if git show-ref --verify --quiet refs/heads/$NEXT_MAJOR_VERSION; then
+            git checkout $NEXT_MAJOR_VERSION
           else
-            git checkout -b $BRANCH_NAME
+            git checkout -b $NEXT_MAJOR_VERSION
           fi
 
           find . -mindepth 1 -maxdepth 1 -not -name '.git' -exec rm -rf {} \;
+
+      - name: Copy build artifact to working directory
+        run: |
           mv "${{ runner.temp }}/schema.ts" .
+          mv "${{ runner.temp }}/package.json" .
+
+      - name: Update version in package.json
+        run: |
+          npm version $NEXT_VERSION --no-git-tag-version
 
       - name: Commit changes
-        env:
-          VERSION: ${{ steps.semver.outputs.next }}
         run: |
           set -e
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
 
           git add --all
-          git commit --quiet -m "chore: Build version $VERSION" || true
-          git tag "$VERSION" || true
+          git commit --quiet -m "chore: Build version $NEXT_VERSION" || true
+          git tag "$NEXT_VERSION" || true
 
       - name: Push changes
         run: |
-          git push --force origin ${{ steps.semver.outputs.nextMajor }}
+          git push --force origin $NEXT_MAJOR_VERSION
           git push --tags
