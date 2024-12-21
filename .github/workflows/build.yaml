@@ -36,7 +36,10 @@ jobs:
 
       - name: Copy build artifact to temp directory
         run: |
+          mv schema.bop "${{ runner.temp }}/schema.bop"
           mv schema.ts "${{ runner.temp }}/schema.ts"
+          mv schema.js "${{ runner.temp }}/schema.js"
+          mv schema.js.map "${{ runner.temp }}/schema.js.map"
           cp package.json "${{ runner.temp }}/package.json"
 
       - name: Setup envs
@@ -59,7 +62,10 @@ jobs:
 
       - name: Copy build artifact to working directory
         run: |
+          mv "${{ runner.temp }}/schema.bop" .
           mv "${{ runner.temp }}/schema.ts" .
+          mv "${{ runner.temp }}/schema.js" .
+          mv "${{ runner.temp }}/schema.js.map" .
           mv "${{ runner.temp }}/package.json" .
 
       - name: Update version in package.json
