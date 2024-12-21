@@ -1,5 +1,5 @@
 {
-  "name": "@abybylijedno/hallelujah-schema",
+  "name": "@abybylijedno/songbook-protocol",
   "version": "1.0.0",
   "description": "",
   "main": "schema.ts",
