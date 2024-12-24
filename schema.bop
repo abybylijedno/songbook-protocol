@@ -4,12 +4,14 @@ message User {
 }
 
 enum CommandType {
-  HELLO = 1;
+  ERROR = 1;
 
-  SESSION_CREATE = 2;
-  SESSION_JOIN = 3;
-  SESSION_INFO = 4;
-  SESSION_GET = 5;
+  HELLO = 2;
+
+  SESSION_CREATE = 3;
+  SESSION_JOIN = 4;
+  SESSION_INFO = 5;
+  SESSION_GET = 6;
   
   SONG_SHOW = 10;
 }
