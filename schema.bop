@@ -1,23 +1,38 @@
-message User {
-  1 -> string name;
-  2 -> string uid;
-}
-
 enum CommandType {
   ERROR = 1;
 
   HELLO = 2;
 
   SESSION_CREATE = 3;
-  SESSION_JOIN = 4;
-  SESSION_INFO = 5;
-  SESSION_GET = 6;
+  SESSION_DELETE = 4;
+  SESSION_JOIN = 5;
+  SESSION_LEAVE = 6;
+  SESSION_GET = 7;
+  SESSION_INFO = 8; 
   
-  SONG_SHOW = 10;
+  SONG_VERSE = 9;
+}
+
+message User {
+  1 -> string name;
+  2 -> string uid;
+}
+
+message Session {
+  1 -> string id;
+  2 -> string name;
+  3 -> User owner;
+  4 -> User[] users;
+}
+
+message SongVerse {
+  1 -> string songHash;
+  2 -> uint8 verseIdx;
 }
 
 message Command {
   1 -> CommandType type ;
   2 -> User user;
-  3 -> string data;
+  3 -> Session session;
+  4 -> SongVerse songVerse;
 }
