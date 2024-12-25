@@ -1,44 +1,58 @@
-enum CommandType {
-  ERROR = 1;
-
-  HELLO = 2;
-
-  SESSION_CREATE = 3;
-  SESSION_DELETE = 4;
-  SESSION_JOIN = 5;
-  SESSION_LEAVE = 6;
-  SESSION_GET = 7;
-  SESSION_INFO = 8; 
-  
-  SONG_VERSE = 9;
-}
-
-struct Error {
-  uint8 code;
-  string msg;
-}
-
 message User {
   1 -> string name;
   2 -> string uid;
 }
 
-message Session {
-  1 -> string id;
-  2 -> string name;
-  3 -> User owner;
-  4 -> User[] users;
+enum SessionMemberRole {
+  CREATOR = 1;
+  MEMBER = 2;
 }
 
-message SongVerse {
-  1 -> string songHash;
-  2 -> uint8 verseIdx;
+struct SessionMember {
+  User user;
+  SessionMemberRole role;
 }
 
-message Command {
-  1 -> CommandType type ;
-  2 -> User user;
-  3 -> Error error;
-  4 -> Session session;
-  5 -> SongVerse songVerse;
+union Command {
+  1 -> message HelloRequest {
+    1 -> string name;
+    2 -> string uid;
+  };
+
+  2 -> struct SessionCreate {};
+  3 -> struct SessionDelete {};
+  4 -> struct SessionJoin { string id; };
+  5 -> struct SessionLeave {};
+  6 -> struct SessionGet {};
+  
+  7 -> struct CurrentSongVerse {
+    string songHash;
+    uint8 verseIdx;
+  }
+}
+
+union Message {
+  1 -> struct Info {
+    string text;
+  };
+
+  2 -> struct Error {
+    uint8 code;
+    string text;
+  };
+
+  3 -> struct HelloResponse {
+    string uid;
+  };
+
+  4-> struct SessionDetails {
+    string id;
+    date expires;
+    SessionMember[] members;
+  }
+  
+  5 -> struct MarkSongVerse {
+    string songHash;
+    uint8 verseIdx;
+  }
 }
