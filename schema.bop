@@ -25,7 +25,7 @@ union Command {
   5 -> struct SessionLeave {};
   6 -> struct SessionGet {};
   
-  7 -> struct CurrentSongVerse {
+  7 -> struct SpreadSongVerse {
     string songHash;
     uint8 verseIdx;
   }
@@ -51,7 +51,7 @@ union Message {
     SessionMember[] members;
   }
   
-  5 -> struct MarkSongVerse {
+  5 -> struct CurrentSongVerse {
     string songHash;
     uint8 verseIdx;
   }
