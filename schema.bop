@@ -32,11 +32,11 @@ union Command {
 }
 
 union Message {
-  1 -> struct Info {
+  1 -> struct InfoMessage {
     string text;
   };
 
-  2 -> struct Error {
+  2 -> struct ErrorMessage {
     uint8 code;
     string text;
   };
