@@ -13,6 +13,29 @@ struct SessionMember {
   SessionMemberRole role;
 }
 
+enum SessionDeleteReason {
+  EXPIRED = 1;
+  CREATORS_DECISION = 2;
+  USER_LEFT = 3;
+}
+
+enum ErrorCode {
+  UNKNOWN = 1;
+  INVALID_COMMAND = 2;
+  SESSION_NOT_FOUND = 3;
+  SESSION_ID_REQUIRED = 4;
+  SESSION_YOU_HAVE_ONE = 5;
+  SESSION_YOU_HAVE_NONE = 6;
+  SESSION_YOU_ARE_NOT_CREATOR = 7;
+  SESSION_YOU_ARE_NOT_MEMBER = 8;
+  SESSION_CANNOT_LEAVE_AS_CREATOR = 9;
+  SONG_NOT_FOUND = 10;
+  SONG_HASH_REQUIRED = 11;
+  SONG_VERSE_IDX_REQUIRED = 12;
+  SONG_VERSE_IDX_INVALID = 13;
+  SONG_VERSE_DOES_NOT_EXIST = 14;
+}
+
 union Command {
   1 -> message HelloRequest {
     1 -> string name;
@@ -28,31 +51,30 @@ union Command {
   7 -> struct SpreadSongVerse {
     string songHash;
     uint8 verseIdx;
-  }
+  };
 }
 
 union Message {
-  1 -> struct InfoMessage {
-    string text;
+  1 -> struct ErrorMessage {
+    ErrorCode code;
   };
 
-  2 -> struct ErrorMessage {
-    uint8 code;
-    string text;
-  };
-
-  3 -> struct HelloResponse {
+  2 -> struct HelloResponse {
     string uid;
   };
 
-  4-> struct SessionDetails {
+  3-> struct SessionDetails {
     string id;
     date expires;
     SessionMember[] members;
-  }
+  };
+
+  4 -> struct SessionDeleted {
+    SessionDeleteReason reason;
+  };
   
   5 -> struct CurrentSongVerse {
     string songHash;
     uint8 verseIdx;
-  }
+  };
 }
