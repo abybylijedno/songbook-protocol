@@ -13,8 +13,8 @@
     "baseUrl": "./"
   },
   "module": {
-    "type": "es6",
+    "type": "umd",
     "resolveFully": true
   },
-  "minify": false
+  "minify": true
 }

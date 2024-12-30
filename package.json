@@ -4,7 +4,6 @@
   "description": "",
   "main": "schema.js",
   "types": "schema.ts",
-  "type": "module",
   "scripts": {
     "build": "bebopc build && swc schema.ts -o schema.js"
   },
