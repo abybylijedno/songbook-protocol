@@ -34,6 +34,8 @@ enum ErrorCode {
   SONG_VERSE_IDX_REQUIRED = 12;
   SONG_VERSE_IDX_INVALID = 13;
   SONG_VERSE_DOES_NOT_EXIST = 14;
+  PLAYLIST_EMPTY = 15;
+  PLAYLIST_TOO_LARGE = 16;
 }
 
 union Command {
@@ -51,6 +53,11 @@ union Command {
   7 -> struct SpreadSongVerse {
     string songSlug;
     uint8 verseIdx;
+  };
+
+  8 -> struct SpreadPlaylist {
+    string name;
+    string[] songSlugs;
   };
 }
 
@@ -76,5 +83,10 @@ union Message {
   5 -> struct CurrentSongVerse {
     string songSlug;
     uint8 verseIdx;
+  };
+
+  6 -> struct CurrentPlaylist {
+    string name;
+    string[] songSlugs;
   };
 }
